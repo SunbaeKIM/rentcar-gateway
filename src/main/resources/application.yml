@@ -1,0 +1,74 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: rent
+          uri: http://localhost:8081
+          predicates:
+            - Path=/rents/**,/db_rent/**
+        - id: assignment
+          uri: http://localhost:8082
+          predicates:
+            - Path=/assignments/**,/db_assignment/**
+        - id: car
+          uri: http://localhost:8083
+          predicates:
+            - Path=/cars/**,/db_car/**
+        - id: customercenter
+          uri: http://localhost:8084
+          predicates:
+            - Path=/rentpages/**,/db_customercenter/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: rent
+          uri: http://rent:8080
+          predicates:
+            - Path=/rents/**,/db_rent/**
+        - id: assignment
+          uri: http://assignment:8080
+          predicates:
+            - Path=/assignments/**,/db_assignment/**
+        - id: car
+          uri: http://car:8080
+          predicates:
+            - Path=/cars/**,/db_car/**
+        - id: customercenter
+          uri: http://customercenter:8080
+          predicates:
+            - Path=/rentPages/**,/db_customercenter/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
